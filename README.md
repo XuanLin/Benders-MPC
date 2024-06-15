@@ -1,12 +1,8 @@
 # Solve MLDs with Generalized Benders Decomposition
 
-<video width="320" height="240" controls>
-  <source src="/videos/cart_pole_animation.mp4" type="video/mp4">
-</video>
+![cart_pole](https://github.com/XuanLin/Benders-MPC/assets/10069542/a107d516-387c-4595-853e-d5717847c1a3)
 
-<video width="320" height="240" controls>
-  <source src="/videos/maze.mp4" type="video/mp4">
-</video>
+![maze](https://github.com/XuanLin/Benders-MPC/assets/10069542/977dc9e5-43dd-4849-863e-257d9ecd54e9)
 
 ## Install the requirements with 
 
@@ -29,6 +25,3 @@ You need to obtain a valid Gurobi license to solve the subQPs
 ## and run:
 
 ```python maze_cpp.py```
-
-![cart_pole](https://github.com/XuanLin/Benders-MPC/assets/10069542/a107d516-387c-4595-853e-d5717847c1a3)
-
