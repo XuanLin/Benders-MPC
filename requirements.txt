@@ -1,0 +1,8 @@
+numpy
+scipy
+pybullet
+gurobipy
+termcolor
+lxml
+matplotlib
+
