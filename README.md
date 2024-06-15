@@ -29,3 +29,6 @@ You need to obtain a valid Gurobi license to solve the subQPs
 ## and run:
 
 ```python maze_cpp.py```
+
+![cart_pole](https://github.com/XuanLin/Benders-MPC/assets/10069542/a107d516-387c-4595-853e-d5717847c1a3)
+
