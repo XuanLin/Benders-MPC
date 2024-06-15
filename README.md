@@ -1,8 +1,7 @@
 # Solve MLDs with Generalized Benders Decomposition
 
-![cart_pole](https://github.com/XuanLin/Benders-MPC/assets/10069542/a107d516-387c-4595-853e-d5717847c1a3)
-
-![maze](https://github.com/XuanLin/Benders-MPC/assets/10069542/977dc9e5-43dd-4849-863e-257d9ecd54e9)
+<img src="https://github.com/XuanLin/Benders-MPC/assets/10069542/a107d516-387c-4595-853e-d5717847c1a3" alt="cart_pole" width="300"/>
+<img src="https://github.com/XuanLin/Benders-MPC/assets/10069542/977dc9e5-43dd-4849-863e-257d9ecd54e9" alt="cart_pole" width="250"/>
 
 ## Install the requirements with 
 
