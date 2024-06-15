@@ -1,0 +1,1 @@
+c++ -O3 -Wall -shared -std=c++11 -fPIC $(python3 -m pybind11 --includes) $(pkg-config --cflags eigen3) GBD_GCS_hybrid_N50.cpp -o GBD_GCS_hybrid_N50$(python3-config --extension-suffix) -I/home/x/Desktop/gurobi1003/linux64/include/ -L/home/x/Desktop/gurobi1003/linux64/lib/ -lgurobi_c++ -lgurobi100
