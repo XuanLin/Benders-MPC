@@ -1,12 +1,8 @@
 # Solve MLDs with Generalized Benders Decomposition
 
-<video width="320" height="240" controls>
-  <source src="/videos/cart_pole_animation.mp4" type="video/mp4">
-</video>
+<img src="https://github.com/XuanLin/Benders-MPC/assets/10069542/a107d516-387c-4595-853e-d5717847c1a3" alt="cart_pole" width="300"/>
+<img src="https://github.com/XuanLin/Benders-MPC/assets/10069542/977dc9e5-43dd-4849-863e-257d9ecd54e9" alt="cart_pole" width="250"/>
 
-<video width="320" height="240" controls>
-  <source src="/videos/maze.mp4" type="video/mp4">
-</video>
 
 ## Install the requirements with 
 
