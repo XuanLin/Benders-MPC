@@ -3,6 +3,10 @@
 <img src="https://github.com/XuanLin/Benders-MPC/assets/10069542/a107d516-387c-4595-853e-d5717847c1a3" alt="cart_pole" width="300"/>
 <img src="https://github.com/XuanLin/Benders-MPC/assets/10069542/977dc9e5-43dd-4849-863e-257d9ecd54e9" alt="cart_pole" width="250"/>
 
+# Associated paper
+This repo is associated with my paper titled [Accelerate Hybrid Model Predictive Control using Generalized Benders Decomposition](https://arxiv.org/pdf/2406.00780).
+
+A more complete version is available [here](https://arxiv.org/pdf/2401.00917).
 
 ## Install the requirements with 
 
