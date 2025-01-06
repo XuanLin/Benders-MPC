@@ -39,65 +39,75 @@ The GBD framework is structured with the following key components:
 ```mermaid
 classDiagram
     direction TB
-
-    %% Core solver classes at the top
+    
+    %% Base/Abstract Classes Layer
     class BaseGBDSolver {
         #params_: SolverParams
-        #master_problem_: unique_ptr~BaseMasterSolver~
-        #subproblem_: unique_ptr~BaseSubSolver~
+        #master_problem_: ~BaseMasterSolver~
+        #sub_problem_: ~BaseSubSolver~
         +solve()
         #updateInitialConditions()
-        #optimizeSubProblem()
+        #solveSubProblem()*
         #solveMasterProblem()*
     }
-
-    %% Core interfaces in the middle
     class BaseMasterSolver {
-        #params_: SolverParams
+        #params_: SolverParams 
         #in_param_: VectorDyn
         +updateInitialConditions()
         +solveMaster()*
         +addOptimalityCut()*
         +addFeasibilityCut()*
+        +storeOptimalityCut()*
+        +storeFeasibilityCut()*
     }
     class BaseSubSolver {
         #params_: SolverParams
         #in_param_: VectorDyn
-        #model_, model_infeas_: unique_ptr
-        +optimize()
         +updateInitialConditions()
+        +solveSub()*
     }
 
-    %% Implementations
+    %% Implementation Layer
+    class GurobiSubSolver {
+        -model_: ~GRBModel~
+        -model_infeas_: ~GRBModel~
+        +solveSub()
+    }
     class GreedyMasterSolver {
         +solveMaster()
         +addOptimalityCut()
         +addFeasibilityCut()
+        +storeOptimalityCut()
+        +storeFeasibilityCut()
     }
     class CartPoleSolver {
         -params_: CartPoleParams
     }
 
-    %% Parameters/Utils on the right
+    %% Parameters Layer (moved to right)
     class SolverParams {
         +Q, Qn, R: MatrixDyn
         +E, F, G: MatrixDyn
         +H1, H2, H3: MatrixDyn
     }
     class CartPoleParams {
-        +System-specific parameters
     }
     class FlyingRobotParams {
-        +System-specific parameters
     }
 
-    %% Relationships
+    %% Inheritance Relationships
     SolverParams <|-- CartPoleParams
     SolverParams <|-- FlyingRobotParams
     BaseMasterSolver <|-- GreedyMasterSolver
+    BaseSubSolver <|-- GurobiSubSolver
     BaseGBDSolver <|-- CartPoleSolver
+
+    %% Composition Relationships
     BaseGBDSolver o-- BaseMasterSolver : has
     BaseGBDSolver o-- BaseSubSolver : has
+
+    %% Dependencies
     CartPoleSolver ..> GreedyMasterSolver : uses by default
-    CartPoleSolver ..> BaseSubSolver : uses by default
+    CartPoleSolver ..> GurobiSubSolver : uses by default
+    CartPoleSolver ..> CartPoleParams : uses
 ```
