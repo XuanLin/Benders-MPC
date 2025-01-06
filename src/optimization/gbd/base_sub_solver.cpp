@@ -1,9 +1,9 @@
 // base_subproblem.cpp
-#include "optimization/gbd/base_subproblem.hpp"
+#include "optimization/gbd/base_sub_solver.hpp"
 
 namespace optimization {
 
-BaseSubproblem::BaseSubproblem(const util::SolverParams& params) : params_(params) {
+BaseSubSolver::BaseSubSolver(const util::SolverParams& params) : params_(params) {
 
     dual_manager_ = std::make_unique<util::DualNameManager>(params_.N, params_.nx, params_.nu, params_.nc);
 
@@ -28,7 +28,7 @@ BaseSubproblem::BaseSubproblem(const util::SolverParams& params) : params_(param
     }
 }
 
-void BaseSubproblem::setupPrimalModel() {
+void BaseSubSolver::setupPrimalModel() {
 
     try {
         // 1. Initialize variables ==============================================
@@ -171,7 +171,7 @@ void BaseSubproblem::setupPrimalModel() {
     }
 }
 
-void BaseSubproblem::setupInfeasibilityModel() {
+void BaseSubSolver::setupInfeasibilityModel() {
     // 1. Initialize variables ==============================================
     // Initial state variables
     x0_infeas_vars_.resize(params_.nx);
@@ -283,7 +283,7 @@ void BaseSubproblem::setupInfeasibilityModel() {
     model_infeas_->setObjective(zero_obj);
 }
 
-void BaseSubproblem::updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new) {
+void BaseSubSolver::updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new) {
     // Verify input dimensions
     assert(x0_new.size() == params_.nx && "Initial state vector dimension mismatch");
     assert(h_theta_new.size() == params_.nc && "Constraint bounds vector dimension mismatch");
@@ -321,7 +321,7 @@ void BaseSubproblem::updateInitialConditions(const VectorDyn& x0_new, const Vect
     }
 }
 
-bool BaseSubproblem::optimize(const std::vector<std::vector<int>>& z_input, std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol,
+bool BaseSubSolver::optimize(const std::vector<std::vector<int>>& z_input, std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol,
     double& obj_value, std::stack<VectorDyn>& dual_z, std::stack<VectorDyn>& dual_param, double& const_part) {
 
     try {

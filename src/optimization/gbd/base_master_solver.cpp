@@ -1,14 +1,14 @@
-#include "optimization/gbd/base_master_problem.hpp"
+#include "optimization/gbd/base_master_solver.hpp"
 #include <cassert>
 
 namespace optimization {
 
-BaseMasterProblem::BaseMasterProblem(const util::SolverParams& params)
+BaseMasterSolver::BaseMasterSolver(const util::SolverParams& params)
     : params_(params) {
     in_param_ = VectorDyn::Zero(params_.dual_len);
 }
 
-void BaseMasterProblem::updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new) {
+void BaseMasterSolver::updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new) {
     assert(x0_new.size() == params_.nx && "Initial state vector dimension mismatch");
     assert(h_theta_new.size() == params_.nc && "Constraint bounds vector dimension mismatch");
 

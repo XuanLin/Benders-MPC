@@ -12,10 +12,10 @@
 
 namespace optimization {
 
-class BaseSubproblem : protected util::GurobiEnv {
+class BaseSubSolver : protected util::GurobiEnv {
 public:
-    explicit BaseSubproblem(const util::SolverParams& params);
-    virtual ~BaseSubproblem() = default;
+    explicit BaseSubSolver(const util::SolverParams& params);
+    virtual ~BaseSubSolver() = default;
 
     virtual bool optimize(const std::vector<std::vector<int>>& z_input,
                           std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol, double& obj_value,

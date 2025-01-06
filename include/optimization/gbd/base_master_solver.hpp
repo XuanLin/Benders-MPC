@@ -10,10 +10,10 @@
 
 namespace optimization {
 
-class BaseMasterProblem : protected util::GurobiEnv {
+class BaseMasterSolver : protected util::GurobiEnv {
 public:
-    explicit BaseMasterProblem(const util::SolverParams& params);
-    virtual ~BaseMasterProblem() = default;
+    explicit BaseMasterSolver(const util::SolverParams& params);
+    virtual ~BaseMasterSolver() = default;
 
     void updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new);
     virtual std::pair<std::vector<std::vector<int>>, double> solveMaster() = 0;
@@ -31,8 +31,8 @@ protected:
     VectorDyn in_param_;
 
 private:
-    BaseMasterProblem(const BaseMasterProblem&) = delete;
-    BaseMasterProblem& operator=(const BaseMasterProblem&) = delete;
+    BaseMasterSolver(const BaseMasterSolver&) = delete;
+    BaseMasterSolver& operator=(const BaseMasterSolver&) = delete;
 };
 
 }

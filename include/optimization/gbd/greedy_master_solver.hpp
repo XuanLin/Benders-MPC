@@ -1,10 +1,10 @@
 #pragma once
-#include "optimization/gbd/base_master_problem.hpp"
+#include "optimization/gbd/base_master_solver.hpp"
 #include <list>
 
 namespace optimization {
 
-class GreedyMasterSolver : public BaseMasterProblem {
+class GreedyMasterSolver : public BaseMasterSolver {
 public:
     explicit GreedyMasterSolver(const util::SolverParams& params);
     ~GreedyMasterSolver() override = default;

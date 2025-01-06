@@ -17,8 +17,8 @@
 #include "common/types.hpp"
 #include "optimization/util/solver_params.hpp"
 #include "optimization/util/gurobi_env.hpp"
-#include "optimization/gbd/base_master_problem.hpp"
-#include "optimization/gbd/base_subproblem.hpp"
+#include "optimization/gbd/base_master_solver.hpp"
+#include "optimization/gbd/base_sub_solver.hpp"
 
 
 namespace optimization {
@@ -26,7 +26,7 @@ namespace optimization {
 class BaseGBDSolver : protected util::GurobiEnv {
 
     public:
-        BaseGBDSolver(const util::SolverParams& params, std::unique_ptr<BaseMasterProblem> master, std::unique_ptr<BaseSubproblem> sub);
+        BaseGBDSolver(const util::SolverParams& params, std::unique_ptr<BaseMasterSolver> master, std::unique_ptr<BaseSubSolver> sub);
         virtual ~BaseGBDSolver();
 
         std::map<std::string, double> solve(const Eigen::Ref<const Eigen::VectorXd>& x0, const Eigen::Ref<const Eigen::VectorXd>& h_theta);
@@ -42,8 +42,8 @@ class BaseGBDSolver : protected util::GurobiEnv {
 
         // Dependencies injected into the base class
         util::SolverParams params_;
-        std::unique_ptr<BaseMasterProblem> master_problem_;
-        std::unique_ptr<BaseSubproblem> subproblem_;
+        std::unique_ptr<BaseMasterSolver> master_problem_;
+        std::unique_ptr<BaseSubSolver> subproblem_;
 
         // State tracking
         int iteration_count_;

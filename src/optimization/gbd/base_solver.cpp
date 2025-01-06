@@ -2,7 +2,7 @@
 
 namespace optimization {
 
-BaseGBDSolver::BaseGBDSolver(const util::SolverParams& params, std::unique_ptr<BaseMasterProblem> master, std::unique_ptr<BaseSubproblem> sub)
+BaseGBDSolver::BaseGBDSolver(const util::SolverParams& params, std::unique_ptr<BaseMasterSolver> master, std::unique_ptr<BaseSubSolver> sub)
     : params_(params), master_problem_(std::move(master)), subproblem_(std::move(sub)) {
 
     iteration_count_ = 0;

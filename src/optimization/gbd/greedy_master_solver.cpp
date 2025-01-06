@@ -6,7 +6,7 @@
 
 namespace optimization {
 
-GreedyMasterSolver::GreedyMasterSolver(const util::SolverParams& params) : BaseMasterProblem(params), lookahead_(1), K_feas_(50), K_opt_(40)  {
+GreedyMasterSolver::GreedyMasterSolver(const util::SolverParams& params) : BaseMasterSolver(params), lookahead_(1), K_feas_(50), K_opt_(40)  {
 
     dual_opt_z_.resize(K_opt_);
     dual_opt_param_.resize(K_opt_);

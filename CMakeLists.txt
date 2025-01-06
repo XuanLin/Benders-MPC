@@ -38,8 +38,8 @@ find_library(GUROBICPP_LIB
 add_library(benders_mpc STATIC
     # Optimization - GBD
     src/optimization/gbd/base_solver.cpp
-    src/optimization/gbd/base_master_problem.cpp
-    src/optimization/gbd/base_subproblem.cpp
+    src/optimization/gbd/base_master_solver.cpp
+    src/optimization/gbd/base_sub_solver.cpp
     src/optimization/gbd/greedy_master_solver.cpp
     
     # Problems - Cart Pole
