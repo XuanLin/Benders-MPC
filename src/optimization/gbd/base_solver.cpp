@@ -3,7 +3,7 @@
 namespace optimization {
 
 BaseGBDSolver::BaseGBDSolver(const util::SolverParams& params, std::unique_ptr<BaseMasterSolver> master, std::unique_ptr<BaseSubSolver> sub)
-    : params_(params), master_problem_(std::move(master)), subproblem_(std::move(sub)) {
+    : params_(params), master_problem_(std::move(master)), sub_problem_(std::move(sub)) {
 
     iteration_count_ = 0;
     best_cost_ = std::numeric_limits<double>::infinity();
@@ -18,7 +18,7 @@ BaseGBDSolver::~BaseGBDSolver() = default;
 
 void BaseGBDSolver::updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new) {
     master_problem_->updateInitialConditions(x0_new, h_theta_new);
-    subproblem_->updateInitialConditions(x0_new, h_theta_new);
+    sub_problem_->updateInitialConditions(x0_new, h_theta_new);
 }
 
 std::map<std::string, double> BaseGBDSolver::solve(const Eigen::Ref<const Eigen::VectorXd>& x0, const Eigen::Ref<const Eigen::VectorXd>& h_theta) {
@@ -71,7 +71,7 @@ std::map<std::string, double> BaseGBDSolver::solve(const Eigen::Ref<const Eigen:
         }
 
         // Solve subproblem
-        bool feas = optimizeSubproblem(z_input, x_sol, u_sol, cost, dual_z, dual_param, const_part);
+        bool feas = solveSubProblem(z_input, x_sol, u_sol, cost, dual_z, dual_param, const_part);
         iteration_count_++;
 
         if (feas) {
@@ -90,6 +90,7 @@ std::map<std::string, double> BaseGBDSolver::solve(const Eigen::Ref<const Eigen:
             }
         } else {
             ls_feas.push_back("infeas");
+
             master_problem_->addFeasibilityCut(dual_z, dual_param);
 
             if (i_loop == 0) {

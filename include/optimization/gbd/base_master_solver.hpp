@@ -6,11 +6,10 @@
 
 #include "common/types.hpp"
 #include "optimization/util/solver_params.hpp"
-#include "optimization/util/gurobi_env.hpp"
 
 namespace optimization {
 
-class BaseMasterSolver : protected util::GurobiEnv {
+class BaseMasterSolver {
 public:
     explicit BaseMasterSolver(const util::SolverParams& params);
     virtual ~BaseMasterSolver() = default;

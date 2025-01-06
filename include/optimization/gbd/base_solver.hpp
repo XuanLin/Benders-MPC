@@ -23,7 +23,7 @@
 
 namespace optimization {
 
-class BaseGBDSolver : protected util::GurobiEnv {
+class BaseGBDSolver {
 
     public:
         BaseGBDSolver(const util::SolverParams& params, std::unique_ptr<BaseMasterSolver> master, std::unique_ptr<BaseSubSolver> sub);
@@ -33,17 +33,15 @@ class BaseGBDSolver : protected util::GurobiEnv {
         
     protected:
         void updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new);
-        bool optimizeSubproblem(std::vector<std::vector<int>>& z_input, 
-                                std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol, double& f_obj, 
-                                std::stack<VectorDyn>& dual_z, std::stack<VectorDyn>& dual_param, double& const_part){
-                                return subproblem_->optimize(z_input, x_sol, u_sol, f_obj, dual_z, dual_param, const_part);}
+        virtual bool solveSubProblem(std::vector<std::vector<int>>& z_input, std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol, double& f_obj, 
+                                        std::stack<VectorDyn>& dual_z, std::stack<VectorDyn>& dual_param, double& const_part) = 0;
         virtual std::pair<std::vector<std::vector<int>>, double> solveMasterProblem() = 0;
         virtual void getSolution(std::map<std::string, double>& solution) const = 0;    
 
         // Dependencies injected into the base class
         util::SolverParams params_;
         std::unique_ptr<BaseMasterSolver> master_problem_;
-        std::unique_ptr<BaseSubSolver> subproblem_;
+        std::unique_ptr<BaseSubSolver> sub_problem_;
 
         // State tracking
         int iteration_count_;

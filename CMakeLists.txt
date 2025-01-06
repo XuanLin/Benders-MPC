@@ -40,6 +40,7 @@ add_library(benders_mpc STATIC
     src/optimization/gbd/base_solver.cpp
     src/optimization/gbd/base_master_solver.cpp
     src/optimization/gbd/base_sub_solver.cpp
+    src/optimization/gbd/gurobi_sub_solver.cpp
     src/optimization/gbd/greedy_master_solver.cpp
     
     # Problems - Cart Pole
