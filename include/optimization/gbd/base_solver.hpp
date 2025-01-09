@@ -33,9 +33,13 @@ class BaseGBDSolver {
         
     protected:
         void updateInitialConditions(const VectorDyn& x0_new, const VectorDyn& h_theta_new);
-        virtual bool solveSubProblem(std::vector<std::vector<int>>& z_input, std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol, double& f_obj, 
-                                        std::stack<VectorDyn>& dual_z, std::stack<VectorDyn>& dual_param, double& const_part) = 0;
-        virtual std::pair<std::vector<std::vector<int>>, double> solveMasterProblem() = 0;
+        bool solveSubProblem(std::vector<std::vector<int>>& z_input, std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol, double& f_obj,
+                             std::stack<VectorDyn>& dual_z, std::stack<VectorDyn>& dual_param, double& const_part) {
+            return sub_problem_->solveSub(z_input, x_sol, u_sol, f_obj, dual_z, dual_param, const_part);
+        }
+        std::pair<std::vector<std::vector<int>>, double> solveMasterProblem() {
+            return master_problem_->solveMaster();
+        }
         virtual void getSolution(std::map<std::string, double>& solution) const = 0;    
 
         // Dependencies injected into the base class

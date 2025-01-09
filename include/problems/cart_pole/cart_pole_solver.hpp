@@ -23,15 +23,6 @@ public:
     ~CartPoleGBDSolver() override = default;
 
 protected:
-    std::pair<std::vector<std::vector<int>>, double> solveMasterProblem() override {
-        return master_problem_->solveMaster();
-    }
-
-    bool solveSubProblem(std::vector<std::vector<int>>& z_input, std::vector<std::vector<double>>& x_sol, std::vector<std::vector<double>>& u_sol, double& f_obj, 
-                         std::stack<VectorDyn>& dual_z, std::stack<VectorDyn>& dual_param, double& const_part) override {
-        return sub_problem_->solveSub(z_input, x_sol, u_sol, f_obj, dual_z, dual_param, const_part);
-    }
-
     void getSolution(std::map<std::string, double>& solution) const override;
 
 private:    
