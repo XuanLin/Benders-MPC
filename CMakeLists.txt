@@ -15,6 +15,7 @@ option(BUILD_EXAMPLES "Build examples" ON)
 
 # Find dependencies
 find_package(Eigen3 REQUIRED)
+find_package(Python3 3.12 EXACT COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 REQUIRED)
 
 # Set the path to the Gurobi installation
@@ -45,6 +46,9 @@ add_library(benders_mpc STATIC
     
     # Problems - Cart Pole
     src/problems/cart_pole/cart_pole_solver.cpp
+    
+    # Problems - Humanoid Balancing
+    src/problems/humanoid_balancing/humanoid_balancing_solver.cpp
 )
 
 pybind11_add_module(cart_pole_cpp
@@ -55,6 +59,17 @@ pybind11_add_module(cart_pole_cpp
 add_custom_command(TARGET cart_pole_cpp POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/scripts/cart_pole/
     COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:cart_pole_cpp> ${CMAKE_SOURCE_DIR}/scripts/cart_pole/
+)
+
+# Python bindings - Humanoid Balancing
+pybind11_add_module(humanoid_balancing_cpp
+    src/problems/humanoid_balancing/bindings/humanoid_balancing_bindings.cpp
+)
+
+# Copy the compiled module to scripts/humanoid_balancing/
+add_custom_command(TARGET humanoid_balancing_cpp POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/scripts/humanoid_balancing/
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:humanoid_balancing_cpp> ${CMAKE_SOURCE_DIR}/scripts/humanoid_balancing/
 )
 
 # Define include directories for the library
@@ -77,6 +92,14 @@ target_include_directories(cart_pole_cpp
         ${EIGEN3_INCLUDE_DIR}
 )
 
+target_include_directories(humanoid_balancing_cpp
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${GUROBI_INCLUDE_DIR}
+        ${EIGEN3_INCLUDE_DIR}
+)
+
 # Link dependencies
 target_link_libraries(benders_mpc
     PUBLIC
@@ -88,6 +111,13 @@ target_link_libraries(benders_mpc
 
 # Link Python binding library with main library
 target_link_libraries(cart_pole_cpp
+    PRIVATE
+        benders_mpc
+        ${GUROBICPP_LIB}
+        ${GUROBI_LIB}
+)
+
+target_link_libraries(humanoid_balancing_cpp
     PRIVATE
         benders_mpc
         ${GUROBICPP_LIB}

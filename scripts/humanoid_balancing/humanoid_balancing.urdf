@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<robot name="humanoid_balancing">
+  
+  <!-- Fixed base (ground/ankle pivot point) -->
+  <link name="ground">
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.02"/>
+      </geometry>
+      <origin xyz="0 0 -0.01"/>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <mass value="0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <!-- Foot/ankle base (analogous to a cart) -->
+  <link name="foot">
+    <visual>
+      <geometry>
+        <box size="0.2 0.15 0.002"/>
+      </geometry>
+      <origin xyz="0 0 0.001"/>
+      <material name="brown">
+        <color rgba="0.6 0.4 0.2 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <mass value="1.0"/>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" 
+              iyy="0.01" iyz="0.0" 
+              izz="0.01"/>
+    </inertial>
+  </link>
+
+  <!-- Fixed joint from ground to foot -->
+  <joint name="ground_to_foot" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="ground"/>
+    <child link="foot"/>
+  </joint>
+  
+  <!-- Body link (inverted pendulum) -->
+  <link name="body">
+    <visual>
+      <geometry>
+        <!-- Cylinder representing the body, length = 0.9 (total height of the robot) -->
+        <cylinder radius="0.01" length="0.9"/>
+      </geometry>
+      <!-- Place cylinder so bottom end is at ankle joint (z=0) -->
+      <!-- Cylinder extends from z=0 to z=0.9 -->
+      <origin xyz="0 0 0.45" rpy="0 0 0"/>
+      <material name="red">
+        <color rgba="0.8 0.3 0.3 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder radius="0.01" length="0.9"/>
+      </geometry>
+      <origin xyz="0 0 0.45" rpy="0 0 0"/>
+    </collision>
+    <inertial>
+      <!-- CoM at lcom = 0.4m from ankle (origin of this link) -->
+      <origin xyz="0 0 0.4" rpy="0 0 0"/>
+      <mass value="20.0"/>
+      <!-- Centroidal inertia about CoM -->
+      <!-- For a pendulum, Icom is about the CoM -->
+      <inertia ixx="1.0" ixy="0.0" ixz="0.0" 
+               iyy="0.01" iyz="0.0" 
+               izz="0.01"/>
+    </inertial>
+  </link>
+  
+  <!-- Revolute joint at ankle - allows rotation about y-axis -->
+  <joint name="ankle_joint" type="revolute">
+    <axis xyz="0 1 0"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="foot"/>
+    <child link="body"/>
+    <limit effort="20.0" lower="-1.57" upper="1.57" velocity="10.0"/>
+  </joint>
+  
+  <!-- Horizontal arm bar (representing stretched arms) -->
+  <link name="arms">
+    <visual>
+      <geometry>
+        <!-- Change length from 0.4 to 0.6 -->
+        <cylinder radius="0.02" length="0.6"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+      <material name="blue">
+        <color rgba="0.3 0.3 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <!-- Change length from 0.4 to 0.6 -->
+        <cylinder radius="0.02" length="0.6"/>
+      </geometry>
+      <origin xyz="0 0 0" rpy="0 1.5708 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <!-- Attach arm bar to body at arm height -->
+  <joint name="body_to_arms" type="fixed">
+    <!-- Place at larm = 0.55 -->
+    <origin xyz="0 0 0.55" rpy="0 0 0"/>
+    <parent link="body"/>
+    <child link="arms"/>
+  </joint>
+
+  <!-- Contact markers at arm tips -->
+  <link name="right_arm_tip">
+    <visual>
+      <geometry>
+        <sphere radius="0.03"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="orange">
+        <color rgba="1.0 0.5 0.0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.03"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <link name="left_arm_tip">
+    <visual>
+      <geometry>
+        <sphere radius="0.03"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+      <material name="orange">
+        <color rgba="1.0 0.5 0.0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.03"/>
+      </geometry>
+      <origin xyz="0 0 0"/>
+    </collision>
+    <inertial>
+      <mass value="0.0"/>
+      <inertia ixx="0.0" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.0"/>
+    </inertial>
+  </link>
+
+  <!-- Attach contact spheres at arm tips -->
+  <joint name="arms_to_right_tip" type="fixed">
+    <origin xyz="0.3 0 0" rpy="0 0 0"/>
+    <parent link="arms"/>
+    <child link="right_arm_tip"/>
+  </joint>
+
+  <joint name="arms_to_left_tip" type="fixed">
+    <origin xyz="-0.3 0 0" rpy="0 0 0"/>
+    <parent link="arms"/>
+    <child link="left_arm_tip"/>
+  </joint>
+  
+</robot>
