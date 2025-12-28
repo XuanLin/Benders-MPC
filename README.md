@@ -5,10 +5,18 @@ Model Predictive Control implementation using Generalized Benders Decomposition 
 ## Overview
 This project implements a model predictive control (MPC) framework using Generalized Benders Decomposition (GBD). The framework is particularly designed for handling systems with mixed-integer constraints, such as hybrid motion planning or contact dynamics. 
 
+## Demonstrations
+
+<div align="center">
+
+| Cart Pole | Humanoid Balancing |
+|:---------:|:------------------:|
+| <img src="docs/media/cart_pole.gif" height="300" alt="Cart Pole Demo"/> | <img src="docs/media/humanoid_balancing.gif" height="300" alt="Humanoid Balancing Demo"/> |
+
+</div>
+
 # Associated paper
 This repo is associated with my paper titled [Accelerate Hybrid Model Predictive Control using Generalized Benders Decomposition](https://arxiv.org/pdf/2406.00780).
-
-A more complete version is available [here](https://arxiv.org/pdf/2401.00917).
 
 ## Key Features
 - Generalized Benders Decomposition framework for MPC problems
