@@ -9,7 +9,7 @@ GurobiSubSolver::GurobiSubSolver(const util::SolverParams& params) : BaseSubSolv
         model_ = std::make_unique<GRBModel>(get());
         model_infeas_ = std::make_unique<GRBModel>(get());
         
-        model_->set(GRB_DoubleParam_BarConvTol, 1e-4);
+        // model_->set(GRB_DoubleParam_BarConvTol, 1e-4);
         model_->set(GRB_IntParam_OutputFlag, 0);
         model_infeas_->set(GRB_IntParam_InfUnbdInfo, 1);
         model_infeas_->set(GRB_IntParam_OutputFlag, 0);
@@ -425,6 +425,17 @@ bool GurobiSubSolver::solveSub(const std::vector<std::vector<int>>& z_input, std
             }
 
             model_infeas_->optimize();
+
+            // Check if we actually got an infeasibility certificate
+            int infeas_status = model_infeas_->get(GRB_IntAttr_Status);
+            if (infeas_status != GRB_INFEASIBLE) {
+                std::cout << "If infeasible status is 2, then the problem is feasible." << std::endl;
+                std::cout << infeas_status << std::endl;
+                std::cerr << "ERROR: Infeasibility model did not return INFEASIBLE status. "
+                        << "Status = " << infeas_status << std::endl;
+                std::cerr << "This suggests numerical issues or model errors." << std::endl;
+                throw std::runtime_error("Cannot get Farkas certificate - unexpected infeasibility model status");
+            }
 
             // Get Farkas dual values
             VectorDyn dual_values(params_.dual_len);
